@@ -3,45 +3,14 @@
 
 // Концепт для проверки наличия метода act
 template <typename T>
-concept HasActMethod = requires(T obj) {
-    { obj.act() }; // Проверка на наличие метода act
+concept PlayerConcept = requires(T player,
+                                 std::vector<size_t> ids,
+                                 size_t value,
+                                 std::vector<SmartPtr<Player>> players) {
+    // Проверяю, что у ведущего классы, для которых определены методы vote и act в объектах
+
+    // тип T имеет  vote
+    { player.vote(ids, value) } -> std::same_as<Task>;
+    // тип T имеет  act
+    { player.act(ids, night_actions, players) } -> std::same_as<Task>;
 };
-class B {
-public:
-    void doSomething() {
-        std::cout << "B::doSomething called" << std::endl;
-    }
-};
-// Пример класса с методом act
-class A:public B {
-public:
-    void act() {
-        std::cout << "A::act called" << std::endl;
-    }
-};
-
-// Пример класса без метода act
-
-
-// Функция для проверки наличия метода act у объекта
-template <HasActMethod T>
-void checkActMethod(T& obj) {
-    obj.act();
-}
-
-template <typename T>
-void checkActMethod(T& obj) {
-    std::cout << "Object does not have an act method." << std::endl;
-}
-
-int main() {
-    A a;
-    B b;
-	B* c;
-	c = new A;
-
-    checkActMethod(a); // Вывод: A::act called
-    checkActMethod(b); // Вывод: Object does not have an act method.
-	checkActMethod(c);
-    return 0;
-}

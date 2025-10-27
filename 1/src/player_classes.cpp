@@ -312,3 +312,39 @@ public:
         return "Доктор"; 
     }
 };
+
+class Bodyguard : public Player {
+public:
+    Bodyguard(int id, bool is_user = false) 
+        : Player(id, Role::BODYGUARD, is_user) {}
+    
+    PlayerAction act(const std::map<int, SmartPointer<Player>>& alive_players, 
+                    Logger& logger, int round, bool is_mafia_round) override {
+        // Телохранитель выбирает игрока для защиты
+        auto targets = getAliveTargets(alive_players);
+        if (!targets.empty()) {
+            target = choose_random(targets);
+            logger.logRound(round, "Телохранитель " + std::to_string(id) + 
+                                " защищает игрока " + std::to_string(target));
+        }
+    
+        co_return;
+    }
+
+    PlayerAction vote(const std::map<int, SmartPointer<Player>>& alive_players,
+                     Logger& logger, int round) override {
+        auto targets = getAliveTargets(alive_players);
+        if (!targets.empty()) {
+            target = choose_random(targets);
+            logger.logRound(round, "Телохранитель " + std::to_string(id) + 
+                               " выбрал игрока " + std::to_string(target) + " на голосовании.");
+        }
+        co_return;
+    }
+
+    std::string getRoleName() const override { 
+        return "Телохранитель"; 
+    }
+    
+    static constexpr bool is_valid_player = true;
+};

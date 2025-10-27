@@ -63,4 +63,13 @@ public:
         }
         return targets;
     }
+    std::vector<int> getMafiaTargets(const std::map<int, SmartPointer<Player>>& alive_players) const {
+        std::vector<int> targets;
+        for (const auto& [player_id, player] : alive_players) {
+            if (player->getRole() == Role::MAFIA) {
+                targets.push_back(player_id);
+            }
+        }
+        return targets;
+    }
 };

@@ -114,22 +114,3 @@ bool operator!=(const SmartPointer<T>& lhs, const SmartPointer<T>& rhs) {
     return !(lhs == rhs);
 }
 
-template<typename T>
-bool operator<(const SmartPointer<T>& lhs, const SmartPointer<T>& rhs) {
-    return lhs.get() < rhs.get();
-}
-
-template<typename T>
-bool operator>(const SmartPointer<T>& lhs, const SmartPointer<T>& rhs) {
-    return rhs < lhs;
-}
-
-template<typename T>
-bool operator<=(const SmartPointer<T>& lhs, const SmartPointer<T>& rhs) {
-    return !(rhs < lhs);
-}
-
-template<typename T>
-bool operator>=(const SmartPointer<T>& lhs, const SmartPointer<T>& rhs) {
-    return !(lhs < rhs);
-}

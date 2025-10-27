@@ -68,6 +68,9 @@
         "ranges": "cpp",
         "forward_list": "cpp",
         "list": "cpp",
-        "__split_buffer": "cpp"
+        "__split_buffer": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     }
 }

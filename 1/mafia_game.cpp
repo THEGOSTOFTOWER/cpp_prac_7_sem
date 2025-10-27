@@ -17,7 +17,6 @@
 
 #define DEBUG_LOG true
 
-
 class MafiaGame {
 private:
     std::map<int, SmartPointer<Player>> alivePlayers;
@@ -56,7 +55,7 @@ private:
         std::random_device rd;
         std::mt19937 gen(rd());
 
-        int k = 3;
+        int k = 5;
         int mafia_count = N / k;
         if (mafia_count == 0) mafia_count = 1;
 
@@ -134,8 +133,7 @@ private:
         std::cin >> targetId;
 
         if (validateTarget(targetId, userId)) {
-            if (role == Role::MANIAC) alivePlayers[userId]->setKillTarget(targetId);
-            else alivePlayers[userId]->setTarget(targetId);
+            alivePlayers[userId]->setKillTarget(targetId);
             logger.logRound(round, "Игрок " + std::to_string(userId) + " выбрал цель: игрок " + std::to_string(targetId));
         }
     }
@@ -257,6 +255,7 @@ private:
         int victimCom = -1;
         int donId = -1;
         int victimDoctor = -1;
+        int victimBodyGuard = -1;
         bool isDoctorKilled = false;
         SmartPointer<Player> don;
 
@@ -322,6 +321,16 @@ private:
         auto doctorPl = alpl | std::views::filter([](const auto& entry) {
             return entry->getRole() == Role::DOCTOR;
         });
+
+        auto bodyGuardPl = alpl | std::views::filter([](const auto& entry) {
+            return entry->getRole() == Role::BODYGUARD;
+        });
+
+        if (!std::ranges::empty(bodyGuardPl)) {
+            auto bodyGuardPlayer = bodyGuardPl.front();
+            victimBodyGuard = bodyGuardPlayer->getTarget();
+        }
+
         if (!std::ranges::empty(doctorPl)) {
             auto doctorPlayer = doctorPl.front();
             victimDoctor = doctorPlayer->getTarget();
@@ -337,24 +346,17 @@ private:
             victimCom = commissionerPlayer->getKillTarget();
         }
 
-        // Проверка, был ли убит доктор
-        if (std::ranges::empty(doctorPl)) {
-            isDoctorKilled = true;
-        } else {
-            auto doctorPlayer = doctorPl.front();
-            isDoctorKilled = (victimMafia == doctorPlayer->getId() || victimManiac == doctorPlayer->getId() || victimCom == doctorPlayer->getId());
-        }
 
 
         logger.logRound(round, "");
         // Обработка убийств
-        processKill(victimMafia, "мафией", victimDoctor);
-        processKill(victimManiac, "маньяком", victimDoctor);
-        processKill(victimCom, "комиссаром", victimDoctor);
+        processKill(victimMafia, "мафией", std::pair{victimDoctor, victimBodyGuard});
+        processKill(victimManiac, "маньяком", std::pair{victimDoctor, victimBodyGuard});
+        processKill(victimCom, "комиссаром", std::pair{victimDoctor, victimBodyGuard});
     }
 
-    void processKill(int victim, const std::string& killer, int protectedPlayer) {
-        if (victim != -1 && victim != protectedPlayer && alivePlayers.find(victim) != alivePlayers.end()) {
+    void processKill(int victim, const std::string& killer, const std::pair<int, int> protectedPlayer) {
+        if (victim != -1 && victim != protectedPlayer.first && victim != protectedPlayer.second && alivePlayers.find(victim) != alivePlayers.end()) {
             bool isUser = (user_in_game && victim == userId);
             std::string victimType = isUser ? "Игрок" : "Бот";
             if (alivePlayers[victim]->getRole() == Role::MAFIA) {

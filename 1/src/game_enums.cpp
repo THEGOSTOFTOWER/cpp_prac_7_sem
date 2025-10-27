@@ -5,7 +5,8 @@ enum class Role {
     CITIZEN,
     COMMISSIONER,
     DOCTOR,
-    MANIAC
+    MANIAC,
+    BODYGUARD
 };
 
 enum class PlayerState {
@@ -21,6 +22,7 @@ inline std::string roleToString(Role role) {
         case Role::COMMISSIONER: return "Комиссар";
         case Role::DOCTOR: return "Доктор";
         case Role::MANIAC: return "Маньяк";
+        case Role::BODYGUARD:  return "Телохранитель";
         default: return "Неизвестно";
     }
 }
