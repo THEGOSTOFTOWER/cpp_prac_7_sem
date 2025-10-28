@@ -98,5 +98,73 @@
         \item Время выполнения $t_i \in \tau$ фиксировано.
     \end{itemize}
 \newpage
+\section*{Исследование последовательного алгоритма}
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results_solo/boltzmann_cooling_heatmap_execution_time.png}
+        %\caption{Время выполнения алгоритма с охлаждением Больцмана}
+        \label{fig:image1}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results_solo/boltzmann_cooling_heatmap_final_cost.png}
+        %\caption{Значения метрик алгоритма Болцмана}
+        \label{fig:image2}
+    \end{minipage}
+    \vspace{-50pt} % Уменьшаем пространство между блоками
+\end{figure}
 
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results_solo/kosh_cooling_heatmap_execution_time.png}
+        %\caption{Время выполнения алгоритма с охлаждением Коши}
+        \label{fig:image3}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results_solo/kosh_cooling_heatmap_final_cost.png}
+        %\caption{Значения метрик алгоритма Коши}
+        \label{fig:image4}
+    \end{minipage}
+    \vspace{-50pt} % Уменьшаем пространство между блоками
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results_solo/SM_cooling_heatmap_execution_time.png}
+        %\caption{Время выполнения алгоритма с логарифмическим охлаждением}
+        \label{fig:image5}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results_solo/SM_cooling_heatmap_final_cost.png}
+        %\caption{Значения метрик алгоритма с логарифмическим охлаждением}
+        \label{fig:image6}
+    \end{minipage}
+    %\vspace{-50pt} % Уменьшаем пространство между блоками
+\end{figure}
+
+Представленные значения получены усреднением 5 запусков последовательного алгоритма имитации отжига.
+
+На основании проведенных исследований можно сделать вывод, что алгоритм понижения температуры на основе модели Больцмана демонстрировал самое длительное время выполнения по сравнению с другими алгоритмами (потому что этот закон понижения температуры самый медленный). Тем не менее, это не отразилось на точности вычислений. Все алгоритмы показали сопоставимые результаты.
+
+\newpage
+\section*{Исследование параллельного алгоритма}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{metrics_plot.png}
+    %\caption{Описание изображения 2}
+    \label{fig:image7}
+\end{figure}
+
+В графе представлены средние значения метрик за 5 запусков, были взяты данные из 16000 задач и 40 процессоров. На основе полученных данных можно понять, что параллельный алгоритм работает многократно дольше последовательной версии, однако имеет прирост производительности.
 \end{document}

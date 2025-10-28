@@ -11,9 +11,9 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
-#include "Solution/Solution.h"
-#include <Mutation.hpp>
-#include <CoolingLawBol.h>
+#include "Mutation/Mutation.h"
+#include "CoolingLaws.h"
+
 
 
 
@@ -27,6 +27,7 @@ public:
         : initialSolution(solution->cloneWithNewSeed(seed)), mutationOperation(mutationOperation), coolingSchedule(coolingSchedule), temperature(initialTemperature),  maxNoImprovementCount(maxNoImprovementCount), threadID(threadID), rng(seed) {}
 
     void run() {
+        // std::cout << "here\n";
         int iteration = 0;
         double bestCost = initialSolution->getCost(); // Изначальная стоимость решения
         auto bestSolution = initialSolution->clone(); // Копия наилучшего решения
@@ -124,9 +125,9 @@ int main(int argc, char *argv[]) {
         int maxGlobalNoImprovementCount = 10;
 
         SchedulingMutation mutationOperation;
-        CoolingLawBol coolingSchedule;
+        
         double initialTemperature = 100.0;
-
+        CoolingLawBol coolingSchedule(initialTemperature);
         int globalNoImprovementCount = 0;
 
         

@@ -5,9 +5,7 @@ class SchedulingMutation : public AbstractMutation {
 public:
     void mutate(AbstractSolution &abstractSolution) override {
         Solution &solution = dynamic_cast<Solution &>(abstractSolution);
-        std::random_device rd;
-        std::mt19937 rng(rd());
-        // std::mt19937 &rng = solution.getRng();
+        std::mt19937 &rng = solution.getRng();
         std::uniform_int_distribution<int> &distribution = solution.getDistribution();
         std::uniform_int_distribution<int> jobDist(0, solution.getNumJobs() - 1);
 

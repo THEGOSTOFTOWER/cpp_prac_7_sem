@@ -11,20 +11,16 @@ public:
     Solution(int numJobs, int numProcessors, const std::vector<uint32_t> &jobDurations, unsigned int seed)
         : numJobs(numJobs), numProcessors(numProcessors), jobDurations(jobDurations), distribution(0, numProcessors - 1) {
         // std::cout << "HERE_S\n";
-        while (true) {
-            rng.seed(seed);
-            schedule.assign(numJobs, std::vector<uint32_t>(numProcessors, 0));
-            processorLoads.resize(numProcessors, 0);
-            for (int i = 0; i < numJobs; ++i) {
-                int processor = distribution(rng);
-                schedule[i][processor] = 1;
-                processorLoads[processor] += jobDurations[i];
-            }
-            // std::cout << validateSolution() << std::endl;
-            if (validateSolution()) {
-                break;
-            }
+        rng.seed(seed);
+        schedule.assign(numJobs, std::vector<uint32_t>(numProcessors, 0));
+        processorLoads.resize(numProcessors, 0);
+        for (int i = 0; i < numJobs; ++i) {
+            int processor = distribution(rng);
+            schedule[i][processor] = 1;
+            processorLoads[processor] += jobDurations[i];
         }
+        // std::cout << validateSolution() << std::endl;
+        
         // std::cout << "HERE_S1\n";
 
     }
