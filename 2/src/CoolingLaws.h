@@ -6,7 +6,7 @@ class CoolingLawBol : public AbstractCoolingLaw {
     CoolingLawBol(double initialTemperature) : initialTemperature(initialTemperature) {}
 
     double cool(double temperature, int iteration) {
-        return initialTemperature / std::log(1 + iteration + 1);
+        return initialTemperature / std::log(1 + iteration);
     }
 
     private:
@@ -19,7 +19,7 @@ class CoolingLawKosh : public AbstractCoolingLaw {
     CoolingLawKosh(double initialTemperature) : initialTemperature(initialTemperature) {}
     
     double cool(double temperature, int iteration) {
-        return initialTemperature / (1 + iteration + 1);
+        return initialTemperature / (1 + iteration);
     }
 
     private:
@@ -32,7 +32,7 @@ class CoolingLawSM : public AbstractCoolingLaw {
     CoolingLawSM(double initialTemperature) : initialTemperature(initialTemperature) {}
 
     double cool(double temperature, int iteration) {
-        return initialTemperature * std::log(1 + iteration + 1) / (1 + iteration + 1);
+        return initialTemperature * std::log(1 + iteration + 1) / (1 + iteration);
     }
 
     private:

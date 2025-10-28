@@ -10,15 +10,23 @@ class Solution: public AbstractSolution {
 public:
     Solution(int numJobs, int numProcessors, const std::vector<uint32_t> &jobDurations, unsigned int seed)
         : numJobs(numJobs), numProcessors(numProcessors), jobDurations(jobDurations), distribution(0, numProcessors - 1) {
-        rng.seed(seed);
-        std::cout << "HERE_S\n";
-        schedule.assign(numJobs, std::vector<uint32_t>(numProcessors, 0));
-        processorLoads.resize(numProcessors, 0);
-        for (int i = 0; i < numJobs; ++i) {
-            int processor = distribution(rng);
-            schedule[i][processor] = 1;
-            processorLoads[processor] += jobDurations[i];
+        // std::cout << "HERE_S\n";
+        while (true) {
+            rng.seed(seed);
+            schedule.assign(numJobs, std::vector<uint32_t>(numProcessors, 0));
+            processorLoads.resize(numProcessors, 0);
+            for (int i = 0; i < numJobs; ++i) {
+                int processor = distribution(rng);
+                schedule[i][processor] = 1;
+                processorLoads[processor] += jobDurations[i];
+            }
+            // std::cout << validateSolution() << std::endl;
+            if (validateSolution()) {
+                break;
+            }
         }
+        // std::cout << "HERE_S1\n";
+
     }
 
     double getCost() const override {
@@ -56,10 +64,15 @@ public:
     }
 
     void updateSchedule(int jobIndex, int oldProcessor, int newProcessor) {
-        schedule[jobIndex][oldProcessor] = 0;
-        schedule[jobIndex][newProcessor] = 1;
-        processorLoads[oldProcessor] -= jobDurations[jobIndex];
-        processorLoads[newProcessor] += jobDurations[jobIndex];
+        while (true) {
+            schedule[jobIndex][oldProcessor] = 0;
+            schedule[jobIndex][newProcessor] = 1;
+            processorLoads[oldProcessor] -= jobDurations[jobIndex];
+            processorLoads[newProcessor] += jobDurations[jobIndex];
+            if (validateSolution()) {
+                break;
+            }
+        }
     }
 
     int getNumJobs() const { return numJobs; }
@@ -80,16 +93,23 @@ public:
 
     std::vector<std::vector<uint32_t>> &getSch() { return schedule; }
 
-    // bool validateSolution() {
-    //     int count = 0;
-    //     for (int i = 0; i < numProcessors; i ++) {
-    //         int cnt_tmp = 0;
-    //         for (int j = 0; j < numJobs; j ++) {
-    //             cnt_tmp += schedule[i][j];
-    //         }
-    //         if 
-    //     }
-    // }
+    bool validateSolution() {
+        int count = 0;
+        for (int j = 0; j < numJobs; j ++) {
+            int cnt_tmp = 0;
+            for (int i = 0; i < numProcessors; i ++) {
+                cnt_tmp += schedule[j][i];
+            }
+            if (cnt_tmp != 1) {
+                return false;
+            }
+            count += cnt_tmp;
+        }
+        if (count != numJobs) {
+                return false;
+            }
+            return true;
+    }
 
 
 private:

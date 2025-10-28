@@ -11,7 +11,7 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
-#include "Mutation/Mutation.h"
+#include "Mutation/Mutation_solo.h"
 #include "CoolingLaws.h"
 
 
@@ -24,17 +24,19 @@ public:
 
     void run()
     {
+
+        
         
         int iteration = 0;
-        double bestCost = solution->getCost(); // Изначальная стоимость решения
-        auto bestSolution = solution->clone(); // Копия наилучшего решения
-        int noImprovementCount = 0;            // Счетчик количества итераций без улучшения
+        double bestCost = solution->getCost(); 
+        auto bestSolution = solution->clone(); 
+        int noImprovementCount = 0;            
         // if (bestSolution == nullptr) {
         //     std::cout << "trubl\n";
         // }
         while (iteration < maxIterations && noImprovementCount < maxNoImprovementCount)
         {
-            // Клонируем лучшее решение и применяем к нему мутацию
+            std::cout << noImprovementCount << std::endl;
             auto currentSolution = bestSolution->clone();
             // std::cout << "LLV\n";
             // if (currentSolution == nullptr) {
@@ -42,57 +44,59 @@ public:
             // }
             mutationOperation->mutate(*currentSolution);
             // std::cout << "LLV1\n";
-            double currentCost = currentSolution->getCost(); // Стоимость мутированного решения
+            double currentCost = currentSolution->getCost(); 
             // if (currentSolution == bestSolution) {
             //     std::cout << "WHY\n";
             // }
             // std::cout << "LLV2\n";
             // std ::cout << bestCost << "?" << currentCost << std::endl;
-            if (currentCost <= bestCost)
+            std::cout << currentCost << " ? " << bestCost << std::endl;
+ 
+            if (currentCost < bestCost)
             {
-                // Если новое решение лучше, обновляем наилучшее решение
+
                 bestCost = currentCost;
                 noImprovementCount = 0;
                 bestSolution = currentSolution;
             }
             else
             {
-                // Если решение хуже, то принимаем его с некоторой вероятностью (правило Метрополиса)
+
                 // std::cout << "L1\n";
                 double acceptanceProbability = std::exp(-(currentCost - bestCost) / temperature);
-                double prob = static_cast<double>(rand()) / RAND_MAX;
-                //  std::cout << acceptanceProbability << ' ' << prob << std::endl;
-                if (acceptanceProbability > prob)
+                
+                // std::cout << acceptanceProbability << ' ' << prob << std::endl;
+                if (acceptanceProbability >= static_cast<double>(rand()) / RAND_MAX)
                 {
-                    // Принять ухудшающее решение и обновить лучшее решение
+                    // std::cout << "take\n";
                     noImprovementCount = 0;
                     bestSolution = currentSolution;
                 }
                 else
                 {
-                    // Если решение не принято, увеличиваем счетчик итераций без улучшений
+
                     noImprovementCount++;
                 }
                 // std::cout << "L3\n";
             }
-            // Обновляем температуру согласно закону понижения температуры
+
             // std::cout << "L1\n";
             temperature = coolingSchedule->cool(temperature, iteration);
             // std::cout << "L2\n";
             iteration++;
         }
-        // Печатаем наилучшее найденное решение
+
         bestSolution->print();
         std::cout << "Best solution found with cost: " << bestCost << std::endl;
     }
 
 private:
-    Solution *solution;                   // Текущее решение
-    SchedulingMutation *mutationOperation; // Операция мутации решения
-    AbstractCoolingLaw *coolingSchedule;     // План понижения температуры
-    double temperature;                   // Текущая температура
-    int maxIterations;                    // Максимальное количество итераций
-    int maxNoImprovementCount;            // Условие останова или максимально число иттераций без улучшений
+    Solution *solution;                   
+    SchedulingMutation *mutationOperation; 
+    AbstractCoolingLaw *coolingSchedule;     
+    double temperature;                   
+    int maxIterations;                    
+    int maxNoImprovementCount;            
 };
 
 std::vector<uint32_t> loadJobDurationsFromCSV(const std::string &filename) {
@@ -130,7 +134,7 @@ int main(int argc, char *argv[])
     if (argc != 4)
     {
         std::cerr << "Usage: " << argv[0] << " <filename> <num_processors> <cooling_method>" << std::endl;
-        std::cerr << "Cooling methods: boltzmann, cauchy, logarithmic" << std::endl;
+        std::cerr << "Cooling methods: boltzmann, kosh, SM" << std::endl;
         return 1;
     }
     std::string filename = argv[1];
@@ -168,7 +172,8 @@ int main(int argc, char *argv[])
 
         int numJobs = jobDurations.size();
 
-        Solution solution(numJobs, numProcessors, jobDurations, 42);
+        Solution solution(numJobs, numProcessors, jobDurations);
+        
         SchedulingMutation mutationOperation;
 
         int maxIterations = 100000;

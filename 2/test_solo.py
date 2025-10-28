@@ -21,7 +21,7 @@ def run_simulation(filename, num_processors, cooling_method):
     """
     total_cost = 0
     total_time = 0
-    num_runs = 1
+    num_runs = 5
 
     for i in range(num_runs):
         
@@ -58,7 +58,7 @@ def main():
     num_jobs_list = [256000, 128000, 64000, 32000, 16000]  # Различные значения количества работ
     min_duration = 1
     max_duration = 100
-    num_processors_list = [640, 320, 160, 80, 40]
+    num_processors_list = [200, 160, 80, 40]
     cooling_methods = ["boltzmann", "kosh", "SM"]
 
     # Открываем файл для записи результатов
