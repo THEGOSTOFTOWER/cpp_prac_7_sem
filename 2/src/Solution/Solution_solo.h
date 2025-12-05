@@ -42,7 +42,7 @@ public:
         //             Tmin = tmp;
         //         }
         // }
-        int Tmin = *std::min_element(jobDurations.begin(), jobDurations.end());
+        int Tmin = *std::max_element(jobDurations.begin(), jobDurations.end());
         // int Tmin = *std::min_element(processorLoads.begin(), processorLoads.end());
         return static_cast<double>(Tmax - Tmin);
     }

@@ -1,0 +1,27 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/FunctionLibrary.dir/src/FuncFactory/FuncFactory.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/FuncFactory/FuncFactory.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/ConstFunction/ConstFunction.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/ConstFunction/ConstFunction.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/ExpFunction/ExpFunction.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/ExpFunction/ExpFunction.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/IdentFunction/IdentFunction.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/IdentFunction/IdentFunction.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/PolynomialFunction/PolynomialFunction.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/PolynomialFunction/PolynomialFunction.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/PowerFunction/PowerFunction.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/Functions/PowerFunction/PowerFunction.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/GradientDescent/GradientDescent.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/GradientDescent/GradientDescent.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/Operators/Operators.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/Operators/Operators.cpp.o.d"
+  "CMakeFiles/FunctionLibrary.dir/src/TFunction/TFunction.cpp.o"
+  "CMakeFiles/FunctionLibrary.dir/src/TFunction/TFunction.cpp.o.d"
+  "libFunctionLibrary.a"
+  "libFunctionLibrary.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/FunctionLibrary.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

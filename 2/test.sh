@@ -1,3 +1,3 @@
 #! /bin/bash
-g++ -Isrc main_solo.cpp -o solo.out
-./solo.out jobs.csv 40 boltzmann
+g++ -Isrc main.cpp -o mult.out
+./mult.out 8

@@ -1,0 +1,5 @@
+if(EXISTS "/home/thegostoftower/cpp_prac/3/build/FunctionTest[1]_tests.cmake")
+  include("/home/thegostoftower/cpp_prac/3/build/FunctionTest[1]_tests.cmake")
+else()
+  add_test(FunctionTest_NOT_BUILT FunctionTest_NOT_BUILT)
+endif()

@@ -50,7 +50,7 @@ def main():
         final_costs = []
         
         # Запуск программы 5 раз для получения среднего значения
-        for _ in range(1):
+        for _ in range(5):
             exec_time, final_cost = run_main_mult(num_proc)
             if exec_time is not None and final_cost is not None:
                 exec_times.append(exec_time)

@@ -36,7 +36,7 @@ public:
         // }
         while (iteration < maxIterations && noImprovementCount < maxNoImprovementCount)
         {
-            std::cout << noImprovementCount << std::endl;
+            // std::cout << noImprovementCount << std::endl;
             auto currentSolution = bestSolution->clone();
             // std::cout << "LLV\n";
             // if (currentSolution == nullptr) {
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
         SchedulingMutation mutationOperation;
 
         int maxIterations = 100000;
-        int maxNoImprovementCount = 100;
+        int maxNoImprovementCount = 1000;
         SimulatedAnnealing sa(&solution, &mutationOperation, coolingSchedule.get(), initialTemperature, maxIterations, maxNoImprovementCount);
 
         sa.run();

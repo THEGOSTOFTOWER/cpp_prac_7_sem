@@ -29,39 +29,38 @@ public:
     void run() {
         // std::cout << "here\n";
         int iteration = 0;
-        double bestCost = initialSolution->getCost(); // Изначальная стоимость решения
-        auto bestSolution = initialSolution->clone(); // Копия наилучшего решения
-        int noImprovementCount = 0;                   // Счетчик количества итераций без улучшения
-        // std::uniform_real_distribution<double> realDist(0.0, 1.0);
+        double bestCost = initialSolution->getCost(); 
+        auto bestSolution = initialSolution->clone(); 
+        int noImprovementCount = 0;                   
 
         while (noImprovementCount < maxNoImprovementCount) {
-            // Клонируем лучшее решение и применяем к нему мутацию
+            
             auto currentSolution = bestSolution->clone();
             mutationOperation->mutate(*currentSolution);
-            double currentCost = currentSolution->getCost(); // Стоимость мутированного решения
+            double currentCost = currentSolution->getCost(); 
 
             if (currentCost < bestCost) {
-                // Если новое решение лучше, обновляем наилучшее решение
+                
                 bestCost = currentCost;
                 noImprovementCount = 0;
                 bestSolution = currentSolution;
             } else {
-                // Если решение хуже, то принимаем его с некоторой вероятностью (правило Метрополиса)
+                
                 double acceptanceProbability = std::exp(-(currentCost - bestCost) / temperature);
                 if (acceptanceProbability >= static_cast<double>(rand()) / RAND_MAX) {
-                    // Принять ухудшающее решение и обновить лучшее решение
+                    
                     noImprovementCount = 0;
                     bestSolution = currentSolution;
                 } else {
-                    // Если решение не принято, увеличиваем счетчик итераций без улучшений
+                    
                     noImprovementCount++;
                 }
             }
-            // Обновляем температуру согласно закону понижения температуры
+            
             temperature = coolingSchedule->cool(temperature, iteration);
             iteration++;
         }
-        // Сохраняем локально лучшее решение
+        
         localBestSolution = bestSolution;
     }
 
@@ -163,13 +162,10 @@ int main(int argc, char *argv[]) {
             bool improved = false;
             for (const auto &localBest : localBestSolutions) {
                 if (localBest->getCost() < globalBestSolution->getCost()) {
-                    // std::lock_guard<std::mutex> lock(globalMutex);
                     globalBestSolution = localBest;
-                    // std::cout << "Found Improved Solution" << std::endl;
                     improved = true;
                 }
             }
-            // std::cout << "Improved: " << improved << std::endl;
             if (improved) {
                 globalNoImprovementCount = 0;
             } else {
